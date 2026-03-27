@@ -87,7 +87,7 @@ export function Hero() {
             transition={{ delay: 1.2, duration: 0.6 }}
             className="mx-auto mt-6 max-w-sm font-mono text-sm uppercase tracking-widest text-muted"
           >
-            Hardware visualization / Cyberpunk aesthetic
+            The last 87,432 hours of a dying hard drive
           </motion.p>
 
           {/* ASCII art accent */}

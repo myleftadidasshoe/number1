@@ -7,35 +7,35 @@ import { useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const components = [
+const stages = [
   {
-    id: "01",
-    title: "PLATTER",
-    desc: "Aluminum alloy disc coated with magnetic material. Data is written in concentric tracks at nanometer precision.",
-    accent: "bg-accent",
-  },
-  {
-    id: "02",
-    title: "SPINDLE",
-    desc: "Fluid dynamic bearing motor. Maintains 7200 RPM with sub-micron wobble tolerance.",
+    phase: "01",
+    title: "BEARING\nWEAR",
+    desc: "The fluid dynamic bearing is losing viscosity. Friction increases. The spindle wobbles 0.003mm more than spec. Imperceptible to you. Fatal to the platter.",
     accent: "bg-cyan",
   },
   {
-    id: "03",
-    title: "READ/WRITE HEAD",
-    desc: "Giant magnetoresistive sensor floating 3nm above the platter surface at 120km/h.",
-    accent: "bg-magenta",
-  },
-  {
-    id: "04",
-    title: "ACTUATOR ARM",
-    desc: "Voice coil motor positions the head across 500,000+ tracks in milliseconds.",
+    phase: "02",
+    title: "HEAD\nDRIFT",
+    desc: "The actuator arm can no longer position the read/write head with nanometer precision. It overshoots. Retries. Each retry is a moment of silence where your file should be.",
     accent: "bg-yellow",
   },
   {
-    id: "05",
-    title: "PCB",
-    desc: "Controller board with ARM processor, DRAM cache, and SATA interface circuitry.",
+    phase: "03",
+    title: "SECTOR\nDEATH",
+    desc: "Magnetic domains on the platter are depolarizing. Bits flip. Checksums fail. The firmware quietly remaps bad sectors, but it's running out of spares.",
+    accent: "bg-magenta",
+  },
+  {
+    phase: "04",
+    title: "THE\nCLICK",
+    desc: "The head crashes into the platter surface. A sound like a ticking clock. Click. Click. Click. The death rattle of a hard drive. You've heard it. You know what it means.",
+    accent: "bg-accent",
+  },
+  {
+    phase: "05",
+    title: "SPIN\nDOWN",
+    desc: "7,200 RPM. 6,000. 3,000. The platter decelerates for the last time. Every rotation carries less data, less memory, less of whoever stored their life here.",
     accent: "bg-accent",
   },
 ];
@@ -68,61 +68,59 @@ export function HorizontalGallery() {
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden">
-      {/* Top border accent */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
 
       <div ref={trackRef} className="flex items-stretch">
         {/* Intro panel */}
         <div className="flex h-screen min-w-[45vw] flex-col justify-center px-[5vw]">
           <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.5em] text-accent">
-            Internal Components
+            Failure Cascade
           </p>
           <h2 className="text-6xl font-black uppercase leading-[0.9] tracking-tighter md:text-8xl">
-            Inside
+            How a
             <br />
-            <span className="text-accent">the</span>
+            drive
             <br />
-            Drive
+            <span className="text-accent">dies</span>
           </h2>
           <div className="mt-6 h-px w-24 bg-accent/40" />
           <p className="mt-4 max-w-xs font-mono text-xs leading-relaxed text-muted">
-            Every component engineered for precision at the nanometer scale.
+            It never happens all at once. It&apos;s a slow unraveling. Component by component. Bit
+            by bit.
           </p>
         </div>
 
-        {/* Component cards */}
-        {components.map((comp) => (
+        {/* Stage cards */}
+        {stages.map((stage) => (
           <div
-            key={comp.id}
-            className="group relative flex h-screen min-w-[35vw] flex-shrink-0 flex-col justify-center px-12"
+            key={stage.phase}
+            className="group relative flex h-screen min-w-[38vw] flex-shrink-0 flex-col justify-center px-12"
           >
-            {/* Card content */}
             <div className="relative border border-white/5 bg-white/[0.02] p-10 transition-all duration-500 group-hover:border-white/10 group-hover:bg-white/[0.04]">
-              {/* Top accent bar */}
               <div
-                className={`absolute top-0 left-0 h-px w-16 ${comp.accent} transition-all duration-500 group-hover:w-full`}
+                className={`absolute top-0 left-0 h-px w-16 ${stage.accent} transition-all duration-500 group-hover:w-full`}
               />
 
-              <span className="font-mono text-6xl font-black text-white/[0.04] md:text-8xl">
-                {comp.id}
+              <span className="font-mono text-7xl font-black text-white/[0.03] md:text-9xl">
+                {stage.phase}
               </span>
-              <h3 className="mt-4 text-2xl font-bold uppercase tracking-wider">{comp.title}</h3>
-              <p className="mt-3 max-w-sm font-mono text-xs leading-relaxed text-muted">
-                {comp.desc}
+              <h3 className="mt-2 whitespace-pre-line text-2xl font-bold uppercase leading-tight tracking-wider">
+                {stage.title}
+              </h3>
+              <p className="mt-4 max-w-sm font-mono text-[11px] leading-relaxed text-muted">
+                {stage.desc}
               </p>
 
-              {/* Bottom detail */}
               <div className="mt-8 flex items-center gap-3">
-                <div className={`h-1.5 w-1.5 rounded-full ${comp.accent}`} />
-                <span className="font-mono text-[10px] uppercase tracking-widest text-muted/50">
-                  Component {comp.id}
+                <div className={`h-1.5 w-1.5 rounded-full ${stage.accent}`} />
+                <span className="font-mono text-[9px] uppercase tracking-widest text-muted/40">
+                  Phase {stage.phase} of failure
                 </span>
               </div>
             </div>
           </div>
         ))}
 
-        {/* End spacer */}
         <div className="min-w-[10vw] flex-shrink-0" />
       </div>
     </section>

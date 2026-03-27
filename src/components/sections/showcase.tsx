@@ -5,41 +5,49 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "motion/react";
 import { useRef } from "react";
-import { TextScramble } from "@/components/motion/text-scramble";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const timeline = [
+const memories = [
   {
-    year: "1956",
-    event: "IBM 350 RAMAC",
-    detail:
-      "First commercial hard drive. 5 megabytes across 50 24-inch platters. Weighed over a ton.",
-    color: "text-accent",
-  },
-  {
-    year: "1980",
-    event: "Seagate ST-506",
-    detail: 'First 5.25" HDD for microcomputers. 5MB capacity. The birth of personal storage.',
+    sector: "0x0001",
+    content:
+      "First boot. A child's hands lifting the case lid. The hum of power. Everything is new.",
+    status: "INTACT",
     color: "text-cyan",
   },
   {
-    year: "1992",
-    event: '1.3" Kittyhawk',
-    detail: "HP's micro drive for PDAs. 20MB in a package smaller than a matchbox.",
-    color: "text-magenta",
+    sector: "0x1A3F",
+    content:
+      "Family photos. Birthdays. A dog named Pixel. 47,000 JPEG files, each one a moment someone wanted to keep.",
+    status: "INTACT",
+    color: "text-cyan",
   },
   {
-    year: "2007",
-    event: "1 Terabyte",
-    detail: "Hitachi ships first 1TB desktop drive. A million megabytes in 3.5 inches of aluminum.",
+    sector: "0x3B72",
+    content:
+      "Late nights. Music folders. Half-finished novels. Browser history that tells a coming-of-age story.",
+    status: "DEGRADED",
     color: "text-yellow",
   },
   {
-    year: "2026",
-    event: "30+ Terabytes",
-    detail:
-      "HAMR technology. Heat-assisted magnetic recording pushes density to 6Tb per square inch.",
+    sector: "0x5E91",
+    content:
+      "The college years. Research papers. Code repositories. A thesis titled 'On the Permanence of Digital Memory.'",
+    status: "CORRUPTED",
+    color: "text-magenta",
+  },
+  {
+    sector: "0x7A2F",
+    content:
+      "Wedding photos. Scanned letters from a grandmother. A video of a first dance. The head scrapes trying to read this sector.",
+    status: "FAILING",
+    color: "text-accent",
+  },
+  {
+    sector: "0xDEAD",
+    content: "B̸̧̛̹r̷̨o̵k̸̻ë̶̝n̸.̵ ̷T̴h̵e̷ ̸d̸a̵t̷a̵ ̷w̴a̷s̴ ̴h̵e̷r̴e̴ ̶b̸u̷t̸ ̵n̷o̷w̶ ̸i̸t̴'̶s̸ ̷j̷u̸s̸t̷ ̴n̸o̷i̵s̴e̷.̶",
+    status: "UNRECOVERABLE",
     color: "text-accent",
   },
 ];
@@ -51,8 +59,7 @@ export function Showcase() {
     () => {
       if (!sectionRef.current) return;
 
-      // Animate each timeline entry
-      const entries = sectionRef.current.querySelectorAll("[data-timeline-entry]");
+      const entries = sectionRef.current.querySelectorAll("[data-memory]");
       for (const entry of entries) {
         gsap.fromTo(
           entry,
@@ -70,8 +77,8 @@ export function Showcase() {
         );
       }
 
-      // Animate the vertical timeline line
-      const line = sectionRef.current.querySelector("[data-timeline-line]");
+      // The timeline line grows
+      const line = sectionRef.current.querySelector("[data-mem-line]");
       if (line) {
         gsap.fromTo(
           line,
@@ -88,69 +95,95 @@ export function Showcase() {
           },
         );
       }
+
+      // Color shift on the line — starts cyan, ends red
+      if (line) {
+        gsap.fromTo(
+          line,
+          { background: "rgba(0, 229, 255, 0.3)" },
+          {
+            background: "rgba(255, 23, 68, 0.5)",
+            ease: "none",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 40%",
+              end: "bottom 80%",
+              scrub: true,
+            },
+          },
+        );
+      }
     },
     { scope: sectionRef },
   );
 
   return (
     <section ref={sectionRef} className="relative px-6 py-32">
-      <div className="mx-auto max-w-4xl">
+      <div className="mx-auto max-w-3xl">
         {/* Section header */}
-        <div className="mb-20 text-center">
-          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.5em] text-accent">
-            Storage Evolution
+        <div className="mb-20">
+          <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.5em] text-cyan">
+            Data Recovery Attempt
           </p>
-          <h2 className="text-5xl font-black uppercase tracking-tighter md:text-7xl">
-            70 Years of
+          <h2 className="text-4xl font-black uppercase tracking-tighter md:text-6xl">
+            What lived
             <br />
-            <span className="text-accent">Spinning Rust</span>
+            <span className="text-accent">on these platters</span>
           </h2>
+          <p className="mt-4 font-mono text-xs leading-relaxed text-muted">
+            A hard drive holds more than data. It holds the shape of a life. Every sector is a
+            moment someone chose to save. And now the sectors are failing, one by one, taking those
+            moments with them.
+          </p>
         </div>
 
-        {/* Timeline */}
+        {/* Memory sectors */}
         <div className="relative">
-          {/* Vertical line */}
-          <div
-            data-timeline-line
-            className="absolute left-8 top-0 bottom-0 w-px bg-accent/30 origin-top md:left-1/2"
-          />
+          <div data-mem-line className="absolute left-4 top-0 bottom-0 w-px origin-top md:left-8" />
 
-          <div className="space-y-16">
-            {timeline.map((item, i) => (
-              <div
-                key={item.year}
-                data-timeline-entry
-                className={`relative flex items-start gap-8 md:gap-16 ${i % 2 === 1 ? "md:flex-row-reverse" : ""}`}
-              >
-                {/* Dot on timeline */}
-                <div className="absolute left-8 top-2 z-10 -translate-x-1/2 md:left-1/2">
-                  <motion.div
-                    className="h-3 w-3 rounded-full bg-accent"
-                    whileInView={{ scale: [0, 1.5, 1] }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                  />
-                </div>
+          <div className="space-y-12">
+            {memories.map((mem) => (
+              <div key={mem.sector} data-memory className="relative pl-12 md:pl-20">
+                {/* Dot on line */}
+                <motion.div
+                  className={`absolute left-4 top-1 z-10 -translate-x-1/2 md:left-8 h-2.5 w-2.5 rounded-full ${
+                    mem.status === "UNRECOVERABLE" || mem.status === "FAILING"
+                      ? "bg-accent"
+                      : mem.status === "CORRUPTED"
+                        ? "bg-magenta"
+                        : mem.status === "DEGRADED"
+                          ? "bg-yellow"
+                          : "bg-cyan"
+                  }`}
+                  whileInView={{ scale: [0, 1.5, 1] }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4 }}
+                />
 
-                {/* Content */}
-                <div className={`ml-16 flex-1 md:ml-0 ${i % 2 === 1 ? "md:text-right" : ""}`}>
-                  <span className={`font-mono text-5xl font-black ${item.color} md:text-6xl`}>
-                    {item.year}
+                {/* Sector label */}
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-muted/50">
+                    Sector {mem.sector}
                   </span>
-                  <h3 className="mt-2 text-xl font-bold uppercase tracking-wider">
-                    <TextScramble
-                      text={item.event}
-                      scrambleSpeed={25}
-                      revealDelay={200 + i * 100}
-                    />
-                  </h3>
-                  <p className="mt-2 max-w-sm font-mono text-xs leading-relaxed text-muted">
-                    {item.detail}
-                  </p>
+                  <span className={`font-mono text-[9px] uppercase tracking-wider ${mem.color}`}>
+                    [{mem.status}]
+                  </span>
                 </div>
 
-                {/* Spacer for other side */}
-                <div className="hidden flex-1 md:block" />
+                {/* Memory content */}
+                <p
+                  className={`font-mono text-sm leading-relaxed ${
+                    mem.status === "UNRECOVERABLE"
+                      ? "text-accent/60"
+                      : mem.status === "FAILING"
+                        ? "text-foreground/50"
+                        : mem.status === "CORRUPTED"
+                          ? "text-foreground/60"
+                          : "text-foreground/80"
+                  }`}
+                >
+                  {mem.content}
+                </p>
               </div>
             ))}
           </div>
