@@ -27,18 +27,18 @@ This file provides guidance for AI assistants working with this repository.
 
 ### Tooling
 - **Biome** — Linting + formatting (replaces ESLint + Prettier)
-- **pnpm** — Package manager
+- **npm** — Package manager
 - **Turbopack** — Dev server bundler (built into Next.js)
 
 ## Commands
 
 ```bash
-pnpm dev          # Start dev server with Turbopack
-pnpm build        # Production build
-pnpm start        # Start production server
-pnpm lint         # Check linting and formatting
-pnpm lint:fix     # Auto-fix lint and format issues
-pnpm format       # Format all source files
+npm run dev       # Start dev server with Turbopack
+npm run build     # Production build
+npm start         # Start production server
+npm run lint      # Check linting and formatting
+npm run lint:fix  # Auto-fix lint and format issues
+npm run format    # Format all source files
 ```
 
 ## Project Structure
@@ -65,16 +65,15 @@ src/
 ## Development Setup
 
 ### Prerequisites
-- Node.js 22+
-- pnpm 10+
+- Node.js 18+ (install via `brew install node` on macOS)
 - Git
 
 ### Getting Started
 ```bash
 git clone <repository-url>
 cd number1
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
 ## Conventions
@@ -85,7 +84,7 @@ pnpm dev
 - Branch names should be descriptive of the feature or fix
 
 ### Code Style
-- **Biome** handles all linting and formatting — run `pnpm lint:fix` before committing
+- **Biome** handles all linting and formatting — run `npm run lint:fix` before committing
 - Import order is enforced automatically by Biome
 - Use double quotes, semicolons always
 - Max line width: 100 characters
@@ -116,4 +115,4 @@ pnpm dev
 - shadcn/ui components can be customized freely — they are copied into the project, not imported from a package
 - Tailwind v4 uses CSS-first config — do NOT create a `tailwind.config.js` file
 - GSAP is free for all uses including commercial (acquired by Webflow)
-- Always run `pnpm lint:fix` after making changes to ensure consistent formatting
+- Always run `npm run lint:fix` after making changes to ensure consistent formatting
