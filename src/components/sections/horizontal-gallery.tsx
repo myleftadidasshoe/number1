@@ -7,12 +7,37 @@ import { useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const items = [
-  { title: "Kinetic Typography", gradient: "from-violet-500/20 to-fuchsia-500/20" },
-  { title: "3D Environments", gradient: "from-cyan-500/20 to-blue-500/20" },
-  { title: "Scroll Narratives", gradient: "from-emerald-500/20 to-lime-500/20" },
-  { title: "Brand Systems", gradient: "from-orange-500/20 to-red-500/20" },
-  { title: "Motion Identity", gradient: "from-pink-500/20 to-rose-500/20" },
+const components = [
+  {
+    id: "01",
+    title: "PLATTER",
+    desc: "Aluminum alloy disc coated with magnetic material. Data is written in concentric tracks at nanometer precision.",
+    accent: "bg-accent",
+  },
+  {
+    id: "02",
+    title: "SPINDLE",
+    desc: "Fluid dynamic bearing motor. Maintains 7200 RPM with sub-micron wobble tolerance.",
+    accent: "bg-cyan",
+  },
+  {
+    id: "03",
+    title: "READ/WRITE HEAD",
+    desc: "Giant magnetoresistive sensor floating 3nm above the platter surface at 120km/h.",
+    accent: "bg-magenta",
+  },
+  {
+    id: "04",
+    title: "ACTUATOR ARM",
+    desc: "Voice coil motor positions the head across 500,000+ tracks in milliseconds.",
+    accent: "bg-yellow",
+  },
+  {
+    id: "05",
+    title: "PCB",
+    desc: "Controller board with ARM processor, DRAM cache, and SATA interface circuitry.",
+    accent: "bg-accent",
+  },
 ];
 
 export function HorizontalGallery() {
@@ -33,62 +58,66 @@ export function HorizontalGallery() {
           start: "top top",
           end: () => `+=${totalScroll}`,
           pin: true,
-          scrub: 1,
+          scrub: 0.8,
           invalidateOnRefresh: true,
         },
       });
-
-      // Animate each card as it enters
-      const cards = trackRef.current.querySelectorAll("[data-gallery-card]");
-      for (const card of cards) {
-        gsap.fromTo(
-          card,
-          { rotateY: -15, opacity: 0.3 },
-          {
-            rotateY: 0,
-            opacity: 1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              containerAnimation: gsap.getById?.("hscroll") || undefined,
-              start: "left 80%",
-              end: "left 30%",
-              scrub: true,
-              horizontal: true,
-            },
-          },
-        );
-      }
     },
     { scope: sectionRef },
   );
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden">
-      <div ref={trackRef} className="flex gap-8 px-[10vw] py-20" style={{ perspective: "1200px" }}>
-        {/* Section intro card */}
-        <div className="flex h-[70vh] min-w-[40vw] flex-col justify-center pr-12">
-          <p className="mb-4 text-xs uppercase tracking-[0.3em] text-muted">Capabilities</p>
-          <h2 className="text-5xl font-bold leading-tight tracking-tight md:text-7xl">
-            What we
+      {/* Top border accent */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+
+      <div ref={trackRef} className="flex items-stretch">
+        {/* Intro panel */}
+        <div className="flex h-screen min-w-[45vw] flex-col justify-center px-[5vw]">
+          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.5em] text-accent">
+            Internal Components
+          </p>
+          <h2 className="text-6xl font-black uppercase leading-[0.9] tracking-tighter md:text-8xl">
+            Inside
             <br />
-            <span className="text-accent">build</span>
+            <span className="text-accent">the</span>
+            <br />
+            Drive
           </h2>
+          <div className="mt-6 h-px w-24 bg-accent/40" />
+          <p className="mt-4 max-w-xs font-mono text-xs leading-relaxed text-muted">
+            Every component engineered for precision at the nanometer scale.
+          </p>
         </div>
 
-        {/* Gallery cards */}
-        {items.map((item) => (
+        {/* Component cards */}
+        {components.map((comp) => (
           <div
-            key={item.title}
-            data-gallery-card
-            className="group relative h-[70vh] min-w-[35vw] flex-shrink-0"
-            style={{ transformStyle: "preserve-3d" }}
+            key={comp.id}
+            className="group relative flex h-screen min-w-[35vw] flex-shrink-0 flex-col justify-center px-12"
           >
-            <div
-              className={`h-full w-full rounded-2xl bg-gradient-to-br ${item.gradient} border border-white/5 p-10 flex flex-col justify-end transition-all duration-500 group-hover:border-white/15`}
-            >
-              <div className="h-px w-12 bg-white/30 mb-4 transition-all duration-500 group-hover:w-20 group-hover:bg-accent" />
-              <h3 className="text-3xl font-bold">{item.title}</h3>
+            {/* Card content */}
+            <div className="relative border border-white/5 bg-white/[0.02] p-10 transition-all duration-500 group-hover:border-white/10 group-hover:bg-white/[0.04]">
+              {/* Top accent bar */}
+              <div
+                className={`absolute top-0 left-0 h-px w-16 ${comp.accent} transition-all duration-500 group-hover:w-full`}
+              />
+
+              <span className="font-mono text-6xl font-black text-white/[0.04] md:text-8xl">
+                {comp.id}
+              </span>
+              <h3 className="mt-4 text-2xl font-bold uppercase tracking-wider">{comp.title}</h3>
+              <p className="mt-3 max-w-sm font-mono text-xs leading-relaxed text-muted">
+                {comp.desc}
+              </p>
+
+              {/* Bottom detail */}
+              <div className="mt-8 flex items-center gap-3">
+                <div className={`h-1.5 w-1.5 rounded-full ${comp.accent}`} />
+                <span className="font-mono text-[10px] uppercase tracking-widest text-muted/50">
+                  Component {comp.id}
+                </span>
+              </div>
             </div>
           </div>
         ))}

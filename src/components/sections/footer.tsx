@@ -4,62 +4,76 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
-import { MagneticButton } from "@/components/motion/magnetic-button";
 import { SplitText } from "@/components/motion/split-text";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function Footer() {
   const sectionRef = useRef<HTMLElement>(null);
-  const lineRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      if (!lineRef.current) return;
+      if (!sectionRef.current) return;
 
-      gsap.fromTo(
-        lineRef.current,
-        { scaleX: 0 },
-        {
-          scaleX: 1,
-          duration: 1.5,
-          ease: "power4.inOut",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
+      const border = sectionRef.current.querySelector("[data-footer-border]");
+      if (border) {
+        gsap.fromTo(
+          border,
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            duration: 1.5,
+            ease: "power4.inOut",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 85%",
+            },
           },
-        },
-      );
+        );
+      }
     },
     { scope: sectionRef },
   );
 
   return (
-    <footer ref={sectionRef} className="relative py-32 px-6">
+    <footer ref={sectionRef} className="relative px-6 py-32">
       <div className="mx-auto max-w-6xl">
-        {/* Animated divider */}
-        <div ref={lineRef} className="mb-20 h-px bg-white/10 origin-left" />
+        <div data-footer-border className="h-px bg-accent/30 origin-left mb-20" />
 
-        <div className="flex flex-col items-center text-center">
-          <p className="mb-6 text-xs uppercase tracking-[0.5em] text-muted">Ready to start?</p>
+        <div className="text-center">
+          <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.5em] text-accent">
+            End of Sector
+          </p>
 
-          <h2 className="text-5xl font-bold tracking-tight md:text-8xl">
-            <SplitText text="Let's create" animation="rise" delay={0} />
+          <h2 className="text-5xl font-black uppercase tracking-tighter md:text-8xl">
+            <SplitText
+              text="EJECT"
+              delay={0.1}
+              animation="rise"
+              charClassName="will-change-transform"
+            />
             <br />
-            <SplitText text="something" animation="rise" delay={0.2} charClassName="text-accent" />
-            <br />
-            <SplitText text="extraordinary." animation="rise" delay={0.4} />
+            <SplitText
+              text="DISK"
+              delay={0.3}
+              animation="rise"
+              charClassName="will-change-transform text-accent"
+            />
           </h2>
 
-          <div className="mt-12">
-            <MagneticButton className="bg-accent/10 border-accent/30 hover:bg-accent/20 px-12 py-5 text-base">
-              Get in Touch
-            </MagneticButton>
+          <div className="mt-10">
+            <button
+              type="button"
+              className="group relative overflow-hidden border border-accent bg-accent/10 px-10 py-4 font-mono text-xs uppercase tracking-[0.3em] text-accent transition-all duration-300 hover:bg-accent hover:text-white"
+            >
+              Initialize Contact
+            </button>
           </div>
 
-          <div className="mt-24 flex w-full items-center justify-between text-xs text-muted/50">
-            <span>number1 Studio</span>
-            <span>&copy; {new Date().getFullYear()}</span>
+          <div className="mt-20 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-muted/30">
+            <span>number1 &mdash; 2026</span>
+            <span>Akira Protocol v1.0</span>
+            <span>Neo-Tokyo</span>
           </div>
         </div>
       </div>
