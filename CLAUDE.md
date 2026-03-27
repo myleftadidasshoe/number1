@@ -4,47 +4,116 @@ This file provides guidance for AI assistants working with this repository.
 
 ## Repository Overview
 
-This is a new project repository (`number1`) currently in its initial setup phase. No application code, build configuration, or tests exist yet.
+**number1** is a high-end web design and motion graphics project built with a modern frontend stack optimized for premium, design-forward, motion-rich web experiences.
 
-## Development Setup
+## Tech Stack
 
-### Prerequisites
+### Core
+- **Next.js 16.2** — App Router, React Server Components, Turbopack
+- **React 19.2** — Server Components, React Compiler support
+- **TypeScript 6.0** — Strict mode enabled
 
-- Git
+### Styling & Components
+- **Tailwind CSS 4.x** — CSS-first configuration via `@theme` directive in `globals.css`
+- **shadcn/ui** — Copy-paste component primitives (Radix UI based)
+- **class-variance-authority** — Component variant management
+- **tailwind-merge + clsx** — Conditional class merging via `cn()` utility
 
-### Getting Started
+### Animation & Motion
+- **GSAP** — Timeline animations, ScrollTrigger, scroll-driven effects
+- **@gsap/react** — React integration via `useGSAP` hook
+- **Motion** (f.k.a. Framer Motion) — React component animations, layout transitions, gestures
+- **Lenis** — Smooth scrolling
+
+### Tooling
+- **Biome** — Linting + formatting (replaces ESLint + Prettier)
+- **pnpm** — Package manager
+- **Turbopack** — Dev server bundler (built into Next.js)
+
+## Commands
 
 ```bash
-git clone <repository-url>
-cd number1
+pnpm dev          # Start dev server with Turbopack
+pnpm build        # Production build
+pnpm start        # Start production server
+pnpm lint         # Check linting and formatting
+pnpm lint:fix     # Auto-fix lint and format issues
+pnpm format       # Format all source files
 ```
 
 ## Project Structure
 
 ```
-number1/
-├── CLAUDE.md          # AI assistant guidance (this file)
-└── (project files TBD)
+src/
+├── app/                    # Next.js App Router pages and layouts
+│   ├── globals.css         # Tailwind theme tokens and global styles
+│   ├── layout.tsx          # Root layout
+│   └── page.tsx            # Home page
+├── components/
+│   ├── ui/                 # shadcn/ui components (Button, etc.)
+│   ├── motion/             # Reusable animation components
+│   │   ├── fade-in.tsx     # Motion-powered fade-in with direction
+│   │   ├── scroll-reveal.tsx # GSAP ScrollTrigger reveal
+│   │   └── smooth-scroll.tsx # Lenis smooth scroll provider
+│   └── three/              # 3D scene components (React Three Fiber)
+├── hooks/                  # Custom React hooks
+│   └── use-lenis.tsx       # Lenis smooth scroll hook
+└── lib/
+    └── utils.ts            # cn() utility for class merging
+```
+
+## Development Setup
+
+### Prerequisites
+- Node.js 22+
+- pnpm 10+
+- Git
+
+### Getting Started
+```bash
+git clone <repository-url>
+cd number1
+pnpm install
+pnpm dev
 ```
 
 ## Conventions
 
 ### Git Workflow
-
 - Use descriptive commit messages that explain the "why" behind changes
 - Keep commits focused and atomic — one logical change per commit
 - Branch names should be descriptive of the feature or fix
 
 ### Code Style
+- **Biome** handles all linting and formatting — run `pnpm lint:fix` before committing
+- Import order is enforced automatically by Biome
+- Use double quotes, semicolons always
+- Max line width: 100 characters
 
-- (To be defined as the project takes shape)
+### Component Patterns
+- **Server Components** by default — only add `"use client"` when needed for interactivity
+- **Animation components** live in `src/components/motion/` and are always client components
+- **UI primitives** in `src/components/ui/` follow shadcn/ui patterns
+- Use `cn()` from `@/lib/utils` for conditional Tailwind classes
 
-## Commands
+### Styling
+- Theme tokens are defined in `src/app/globals.css` via Tailwind's `@theme` directive
+- Use Tailwind utilities for layout and spacing
+- Use CSS custom properties (from `@theme`) for colors, fonts, radii
+- Custom animations use GSAP (scroll-driven) or Motion (component transitions)
 
-No build, test, or lint commands are configured yet. Update this section as tooling is added.
+### Animation Guidelines
+- **GSAP** for: scroll-triggered animations, complex timelines, text splitting, morphing
+- **Motion** for: component enter/exit, layout animations, gestures, spring physics
+- **Lenis** for: smooth scrolling (wrap app in `<SmoothScroll>`)
+- Always clean up GSAP animations in `useGSAP` (handles cleanup automatically)
+- Use `viewport={{ once: true }}` on Motion components to avoid re-triggering
 
 ## Notes for AI Assistants
 
-- This repository is in its initial state — treat any new additions as foundational decisions
-- When adding new files or dependencies, prefer simple, well-established tools
-- Update this CLAUDE.md file as the project evolves to reflect new structure, commands, and conventions
+- This is a motion-first web project — animations and visual polish are first-class concerns
+- When creating new components, consider whether they need animation and use the appropriate library
+- shadcn/ui components can be customized freely — they are copied into the project, not imported from a package
+- Tailwind v4 uses CSS-first config — do NOT create a `tailwind.config.js` file
+- GSAP is free for all uses including commercial (acquired by Webflow)
+- Always run `pnpm lint:fix` after making changes to ensure consistent formatting
