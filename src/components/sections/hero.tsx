@@ -3,6 +3,8 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import dynamic from "next/dynamic";
 import { useRef } from "react";
+import { AsciiRain } from "@/components/motion/ascii-rain";
+import { GlitchText } from "@/components/motion/glitch-text";
 import { SplitText } from "@/components/motion/split-text";
 import { TextScramble } from "@/components/motion/text-scramble";
 
@@ -28,9 +30,14 @@ export function Hero() {
         style={{ opacity: heroOpacity, scale: heroScale, y: heroY }}
         className="sticky top-0 flex min-h-screen flex-col items-center justify-center overflow-hidden"
       >
+        {/* ASCII rain background */}
+        <div className="pointer-events-none absolute inset-0 z-0 opacity-40">
+          <AsciiRain />
+        </div>
+
         {/* Background grid */}
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.04]"
+          className="pointer-events-none absolute inset-0 z-[1] opacity-[0.03]"
           style={{
             backgroundImage:
               "linear-gradient(rgba(255,23,68,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,23,68,0.5) 1px, transparent 1px)",
@@ -38,12 +45,12 @@ export function Hero() {
           }}
         />
 
-        {/* Red glow behind 3D scene */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-accent/10 blur-[150px]" />
-        <div className="pointer-events-none absolute left-1/3 top-1/3 h-[300px] w-[300px] rounded-full bg-cyan/5 blur-[120px]" />
+        {/* Glows */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-[1] -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-accent/10 blur-[150px]" />
+        <div className="pointer-events-none absolute left-1/3 top-1/3 z-[1] h-[300px] w-[300px] rounded-full bg-cyan/5 blur-[120px]" />
 
         {/* 3D HDD Scene */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-[2]">
           <HDDScene />
         </div>
 
@@ -61,7 +68,7 @@ export function Hero() {
             </span>
           </motion.div>
 
-          {/* Main heading */}
+          {/* Main heading with GLITCH */}
           <h1 className="text-7xl font-black uppercase leading-[0.9] tracking-tighter md:text-[10rem]">
             <SplitText
               text="BARE"
@@ -70,15 +77,10 @@ export function Hero() {
               charClassName="will-change-transform"
             />
             <br />
-            <SplitText
-              text="METAL"
-              delay={0.4}
-              animation="rise"
-              charClassName="will-change-transform text-accent"
-            />
+            <GlitchText text="METAL" className="text-accent" />
           </h1>
 
-          {/* Subtitle with glitch feel */}
+          {/* Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -88,12 +90,27 @@ export function Hero() {
             Hardware visualization / Cyberpunk aesthetic
           </motion.p>
 
+          {/* ASCII art accent */}
+          <motion.pre
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.15 }}
+            transition={{ delay: 1.8, duration: 1 }}
+            className="mx-auto mt-8 font-mono text-[8px] leading-tight text-accent select-none"
+          >
+            {`    ┌──────────────────────────┐
+    │  ████████  ┌──┐  ░░░░  │
+    │  ████████  │▓▓│  ░░░░  │
+    │     ◉      └──┘        │
+    │  ─────────────── ◉──── │
+    └──────────────────────────┘`}
+          </motion.pre>
+
           {/* CTA */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.6, duration: 0.5 }}
-            className="mt-10 flex items-center justify-center gap-6"
+            className="mt-8 flex items-center justify-center gap-6"
           >
             <button
               type="button"
@@ -110,12 +127,12 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Bottom HUD elements */}
+        {/* Bottom HUD */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2, duration: 0.8 }}
-          className="absolute bottom-8 left-8 font-mono text-[10px] uppercase tracking-widest text-muted/40"
+          className="absolute bottom-8 left-8 z-10 font-mono text-[10px] uppercase tracking-widest text-muted/40"
         >
           <div>SYS.STATUS: ONLINE</div>
           <div className="mt-1 text-accent/40">
@@ -127,17 +144,17 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2, duration: 0.8 }}
-          className="absolute bottom-8 right-8 font-mono text-[10px] uppercase tracking-widest text-muted/40 text-right"
+          className="absolute bottom-8 right-8 z-10 text-right font-mono text-[10px] uppercase tracking-widest text-muted/40"
         >
           <div>SECTOR: 0x7F</div>
           <div className="mt-1">RPM: 7200</div>
         </motion.div>
 
-        {/* Decorative corner brackets */}
-        <div className="pointer-events-none absolute left-6 top-6 h-12 w-12 border-l border-t border-accent/20" />
-        <div className="pointer-events-none absolute right-6 top-6 h-12 w-12 border-r border-t border-cyan/20" />
-        <div className="pointer-events-none absolute bottom-6 left-6 h-12 w-12 border-b border-l border-accent/20" />
-        <div className="pointer-events-none absolute bottom-6 right-6 h-12 w-12 border-b border-r border-cyan/20" />
+        {/* Corner brackets */}
+        <div className="pointer-events-none absolute left-6 top-6 z-10 h-12 w-12 border-l border-t border-accent/20" />
+        <div className="pointer-events-none absolute right-6 top-6 z-10 h-12 w-12 border-r border-t border-cyan/20" />
+        <div className="pointer-events-none absolute bottom-6 left-6 z-10 h-12 w-12 border-b border-l border-accent/20" />
+        <div className="pointer-events-none absolute bottom-6 right-6 z-10 h-12 w-12 border-b border-r border-cyan/20" />
       </motion.div>
     </section>
   );
